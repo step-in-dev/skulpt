@@ -4,22 +4,6 @@ import unittest
 
 class InputFunTests(unittest.TestCase):
 
-    def setUp(self):
-        jseval("""
-            var oldInputFunTakesPrompt = Sk.inputfunTakesPrompt;
-            var oldInputFun = Sk.inputfun
-            Sk.inputfunTakesPrompt = true;
-            Sk.inputfun = function (prompt) { 
-                return new Promise(function (resolve, reject) {
-                    if (prompt === "error") {
-                        throw new Sk.builtin.ValueError("aarrrggg");
-                    }
-                    resolve(new Sk.builtin.str(prompt + "testing"));
-                });
-            }
-        """)
-
-
     def test_input_fun_should_return_prompt_asynchronously(self):
         res = input(">>> ")
         self.assertEqual(res, ">>> testing")
@@ -34,13 +18,6 @@ class InputFunTests(unittest.TestCase):
             threw = True
 
         self.assertTrue(threw)
-
-
-    def tearDown(self):
-        jseval("""
-            Sk.inputfunTakesPrompt = oldInputFunTakesPrompt;
-            Sk.inputfun = oldInputFun;
-        """)
 
 if __name__ == '__main__':
     unittest.main()

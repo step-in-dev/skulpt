@@ -200,17 +200,13 @@ class UnpackTest(unittest.TestCase):
             'x = *a': (SyntaxError, 'can\'t use starred expression here'),
 
         }
-        jseval("Sk.retainGlobals = true") # use globals from this module
-        # use this to test syntax errors and their respective mssages
-        eval_alt = "Sk.importMainWithBody('test_unpack', false, '{0}', true)"
         for expr, (error, msg) in expressions.items():
             try:
-                jseval(eval_alt.format(expr))
+                exec(expr, globals())
             except error as e:
                 self.assertIn(msg, str(e))
             else:
                 self.fail(f'{error} not raised for {expr}')
-        jseval("Sk.retainGlobals = false")
 
 
     def test_dict_unpacking(self):

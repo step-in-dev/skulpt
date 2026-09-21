@@ -728,11 +728,6 @@ Sk.builtin.raw_input = function (prompt) {
 
 Sk.builtin.input = Sk.builtin.raw_input;
 
-Sk.builtin.jseval = function jseval (evalcode) {
-    const result = Sk.global["eval"](Sk.ffi.remapToJs(evalcode));
-    return Sk.ffi.remapToPy(result);
-};
-
 /**
  * @deprecated
  */

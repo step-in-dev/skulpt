@@ -86,6 +86,23 @@ function test (python3, opt, module = undefined) {
         // Print test name
         console.log(test[0] + "\n");
 
+        const isInputTest = test[1] === "test_input";
+        let oldInputFun;
+        let oldInputFunTakesPrompt;
+        if (isInputTest) {
+            oldInputFun = Sk.inputfun;
+            oldInputFunTakesPrompt = Sk.inputfunTakesPrompt;
+            Sk.inputfunTakesPrompt = true;
+            Sk.inputfun = function (prompt) {
+                return new Promise(function (resolve, reject) {
+                    if (prompt === "error") {
+                        throw new Sk.builtin.ValueError("aarrrggg");
+                    }
+                    resolve(new Sk.builtin.str(prompt + "testing"));
+                });
+            };
+        }
+
         // Run test
         Sk.misceval.asyncToPromise(function() {
             return Sk.importMain(test[1], false, true);
@@ -111,6 +128,10 @@ function test (python3, opt, module = undefined) {
             console.log("UNCAUGHT EXCEPTION: " + err);
             console.log(err.stack);
         }).then(function () {
+            if (isInputTest) {
+                Sk.inputfun = oldInputFun;
+                Sk.inputfunTakesPrompt = oldInputFunTakesPrompt;
+            }
             runtest(tests, passed, failed)
         });
     }

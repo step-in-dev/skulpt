@@ -90,7 +90,6 @@ Sk.builtins = {
     "raw_input" : new Sk.builtin.func(Sk.builtin.raw_input),
     "setattr"   : null,
     /*'read': Sk.builtin.read,*/
-    "jseval"    : Sk.builtin.jseval,
     "jsmillis"  : Sk.builtin.jsmillis,
     "quit"      : new Sk.builtin.func(Sk.builtin.quit),
     "exit"      : new Sk.builtin.func(Sk.builtin.quit),
